@@ -6,9 +6,13 @@ namespace r0w3ntje
 {
     public class LoadingManager : Singleton<LoadingManager>
     {
+        [SerializeField] private bool loadSceneOnStart = true;
+        [SerializeField] private int scene = 1;
+
         private void Start()
         {
-            ToScene(1);
+            if (loadSceneOnStart)
+                ToScene(scene);
         }
 
         public void ToScene(int _sceneIndex)
