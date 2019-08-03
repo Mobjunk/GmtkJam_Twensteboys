@@ -1,26 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CinematicCamera : MonoBehaviour
 {
-    public Vector3 cinematicEndPosition;
-    public float speed;
+    [SerializeField] private new Transform camera;
+    [SerializeField] private Vector3 cameraStartPosition, cameraEndPosition;
 
-    Vector3 offset;
+    [SerializeField] private float time = 2f, delay = 0.5f;
+    [SerializeField] private Ease cinematicEasing = Ease.InOutCubic;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        offset = new Vector3((gameObject.transform.position.x - cinematicEndPosition.x) / speed, (gameObject.transform.position.y - cinematicEndPosition.y) / speed, (gameObject.transform.position.z - cinematicEndPosition.z) / speed);
+        StartCinematic();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void StartCinematic()
     {
-        if (gameObject.transform.position != cinematicEndPosition)
-        {
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x - offset.x * Time.fixedDeltaTime, gameObject.transform.position.y - offset.y * Time.fixedDeltaTime, gameObject.transform.position.z - offset.z * Time.fixedDeltaTime);
-        }
+        camera.position = cameraStartPosition;
+
+        camera.DOMove(cameraEndPosition, time)
+            .SetEase(cinematicEasing)
+            .SetDelay(delay)
+            .OnComplete(() =>
+            {
+                Debug.Log("Cinematic camera is done");
+            });
     }
 }
