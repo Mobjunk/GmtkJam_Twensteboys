@@ -26,7 +26,7 @@ public class FallingTile : MonoBehaviour
     {
         if (tile.transform.position.y != lowestPosition)
         {
-            tile.transform.position = new Vector3(tile.transform.position.x, Mathf.Clamp(tile.transform.position.y - offset, lowestPosition, topPosition), tile.transform.position.z);
+            tile.transform.position = new Vector3(tile.transform.position.x, Mathf.Clamp(tile.transform.position.y - offset * Time.fixedDeltaTime, lowestPosition, topPosition), tile.transform.position.z);
         }
     }
 
@@ -34,7 +34,7 @@ public class FallingTile : MonoBehaviour
     {
         if (tile.transform.position.y != topPosition)
         {
-            tile.transform.position = new Vector3(tile.transform.position.x, Mathf.Clamp(tile.transform.position.y + offset, lowestPosition, topPosition), tile.transform.position.z);
+            tile.transform.position = new Vector3(tile.transform.position.x, Mathf.Clamp(tile.transform.position.y + offset * Time.fixedDeltaTime, lowestPosition, topPosition), tile.transform.position.z);
         }
         else
         {
@@ -58,6 +58,6 @@ public class FallingTile : MonoBehaviour
     private void Start()
     {
         topPosition = tile.transform.position.y;
-        offset = (topPosition - lowestPosition) / speed * Time.fixedDeltaTime;
+        offset = (topPosition - lowestPosition) / speed;
     }
 }

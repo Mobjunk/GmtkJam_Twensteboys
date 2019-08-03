@@ -12,7 +12,7 @@ public class CinematicCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        offset = new Vector3((gameObject.transform.position.x - cinematicEndPosition.x) / speed * Time.fixedDeltaTime, (gameObject.transform.position.y - cinematicEndPosition.y) / speed * Time.fixedDeltaTime, (gameObject.transform.position.z - cinematicEndPosition.z) / speed * Time.fixedDeltaTime);
+        offset = new Vector3((gameObject.transform.position.x - cinematicEndPosition.x) / speed, (gameObject.transform.position.y - cinematicEndPosition.y) / speed, (gameObject.transform.position.z - cinematicEndPosition.z) / speed);
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class CinematicCamera : MonoBehaviour
     {
         if (gameObject.transform.position != cinematicEndPosition)
         {
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x - offset.x, gameObject.transform.position.y - offset.y, gameObject.transform.position.z - offset.z);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x - offset.x * Time.fixedDeltaTime, gameObject.transform.position.y - offset.y * Time.fixedDeltaTime, gameObject.transform.position.z - offset.z * Time.fixedDeltaTime);
         }
     }
 }
