@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class GridElement : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GridElement : MonoBehaviour
     [SerializeField, HideInInspector] GameObject[] walls = new GameObject[4];
 
 
-    public GameObject ground => transform.Find("Ground").gameObject;
+    public GameObject ground => transform.GetChild(0).gameObject;
 
 
     public void Clear()
@@ -19,7 +20,6 @@ public class GridElement : MonoBehaviour
         SetRight(false);
         SetBottom(false);
         SetLeft(false);
-        DestroyImmediate(ground);
     }
 
     float GetBoundX => ground.transform.lossyScale.x / 2;
@@ -34,14 +34,13 @@ public class GridElement : MonoBehaviour
         _Top = active;
         if (_Top)
         {
-
-            float boundZ = GetBoundZ;
-            float boundY = GetBoundY;
-            float wallBoundY = GetWallBoundY;
-            float WallBoundZ = GetWallBoundZ;
-
             if (walls[0] == null)
-            {
+            { 
+                float boundZ = GetBoundZ;
+                float boundY = GetBoundY;
+                float wallBoundY = GetWallBoundY;
+                float WallBoundZ = GetWallBoundZ;
+
                 walls[0] = Instantiate(WallPrefab, ground.transform.position + (Vector3.forward * (boundZ - WallBoundZ)) + (Vector3.up * (boundY + wallBoundY)), Quaternion.identity, gameObject.transform);
             }
         }
@@ -56,20 +55,18 @@ public class GridElement : MonoBehaviour
 
     public void SetRight(bool active)
     {
-
-
         _Right = active;
         if (_Right)
         {
 
-            float boundX = GetBoundX;
-            float boundY = GetBoundY;
-
-            float wallBoundY = GetWallBoundY;
-            float WallBoundZ = GetWallBoundZ;
-
             if (walls[1] == null)
             {
+                float boundX = GetBoundX;
+                float boundY = GetBoundY;
+
+                float wallBoundY = GetWallBoundY;
+                float WallBoundZ = GetWallBoundZ;
+
                 walls[1] = Instantiate(WallPrefab, transform.position + (Vector3.right * (boundX - WallBoundZ)) + (Vector3.up * (boundY + wallBoundY)), Quaternion.Euler(0, 90, 0), gameObject.transform);
             }
         }
@@ -87,15 +84,14 @@ public class GridElement : MonoBehaviour
         _Bottom = active;
         if (_Bottom)
         {
-
-            float boundZ = GetBoundZ;
-            float boundY = GetBoundY;
-
-            float wallBoundY = GetWallBoundY;
-            float WallBoundZ = GetWallBoundZ;
-
             if (walls[2] == null)
             {
+                float boundZ = GetBoundZ;
+                float boundY = GetBoundY;
+
+                float wallBoundY = GetWallBoundY;
+                float WallBoundZ = GetWallBoundZ;
+
                 walls[2] = Instantiate(WallPrefab, transform.position + (Vector3.back * (boundZ - WallBoundZ)) + (Vector3.up * (boundY + wallBoundY)), Quaternion.identity, gameObject.transform);
             }
         }
@@ -114,13 +110,14 @@ public class GridElement : MonoBehaviour
 
         if (_Left)
         {
-            float boundZ = GetBoundZ;
-            float boundY = GetBoundY;
-
-            float wallBoundY = GetWallBoundY;
-            float WallBoundZ = GetWallBoundZ;
             if (walls[3] == null)
-            {
+            { 
+                float boundZ = GetBoundZ;
+                float boundY = GetBoundY;
+
+                float wallBoundY = GetWallBoundY;
+                float WallBoundZ = GetWallBoundZ;
+
                 walls[3] = Instantiate(WallPrefab, transform.position + (Vector3.left * (boundZ - WallBoundZ)) + (Vector3.up * (boundY + wallBoundY)), Quaternion.Euler(0, 90, 0), gameObject.transform);
             }
         }

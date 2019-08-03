@@ -1,13 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GridCreator : MonoBehaviour
 {
+    private KillZone _killZone;
+
+    private KillZone GetKillzone()
+    {
+        if (_killZone == null)
+        {
+            _killZone = KillZone.Instance();
+        }
+
+        return _killZone;
+    }
 
 #if UNITY_EDITOR
     [SerializeField]
-    private Vector2Int _GridSize = new Vector2Int(2,2);
+    private Vector2Int _GridSize = new Vector2Int(2, 2);
 
     [SerializeField] private GameObject PrefabElementGameObject;
 
@@ -41,19 +52,25 @@ public class GridCreator : MonoBehaviour
 
                 ResetGrid = false;
 
-
-
                 for (int x = 0; x < _GridSize.x; x++)
                 {
                     for (int z = 0; z < _GridSize.y; z++)
                     {
-                        GridElement gridElement = Instantiate(PrefabElementGameObject, transform.position + new Vector3(x, 0, z), Quaternion.identity,gameObject.transform).GetComponent<GridElement>();
+
+                       GameObject obj=  PrefabUtility.InstantiatePrefab(PrefabElementGameObject) as GameObject;
+                       obj.transform.parent = gameObject.transform;
+                       obj.transform.position = transform.position + new Vector3(x, 0, z);
+                       obj.transform.rotation = Quaternion.identity;
+                      
+                       GridElement gridElement = obj.GetComponent<GridElement>();
+
+
                         if (z == 0)
                         {
-                            gridElement.SetBottom(true) ;
+                            gridElement.SetBottom(true);
                         }
 
-                        if (z == (_GridSize.y-1))
+                        if (z == (_GridSize.y - 1))
                         {
                             gridElement.SetTop(true);
                         }
@@ -63,7 +80,7 @@ public class GridCreator : MonoBehaviour
                             gridElement.SetLeft(true);
                         }
 
-                        if (x == (_GridSize.x-1))
+                        if (x == (_GridSize.x - 1))
                         {
                             gridElement.SetRight(true);
                         }
@@ -72,8 +89,26 @@ public class GridCreator : MonoBehaviour
 
                     }
                 }
+
+
+                GetKillzone().SetCenter(transform.position + ((Vector3.forward * _GridSize.x + Vector3.right * _GridSize.y) * 0.5f) + Vector3.down * 10);
+                GetKillzone().SetSize(_GridSize * 2);
+
             };
         }
     }
 #endif
+
+
+    private void Start()
+    {
+        GetKillzone().BindOnDieEvent(ResetLevel);
+
+    }
+
+    private void ResetLevel()
+    {
+
+    }
+
 }
