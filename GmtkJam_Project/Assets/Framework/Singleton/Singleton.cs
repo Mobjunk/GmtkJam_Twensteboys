@@ -7,6 +7,10 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     public static T Instance()
     {
         _instance = FindObjectOfType<T>();
+        if (_instance == null)
+        {
+            _instance = new GameObject(typeof(T).ToString()).AddComponent<T>();
+        }
         return _instance;
     }
 }
