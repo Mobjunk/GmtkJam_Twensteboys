@@ -308,8 +308,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 359295977}
-  cameraStartPosition: {x: 3, y: 10, z: 3}
-  cameraEndPosition: {x: -3, y: 10, z: -3}
+  cameraStartPosition: {x: 10, y: 10, z: 10}
+  cameraEndPosition: {x: -10, y: 10, z: -10}
   time: 2
   delay: 0.5
   cinematicEasing: 10
