@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 
 enum Direction
@@ -208,7 +209,6 @@ public class GridElement : MonoBehaviour
                 {
                     DestroyImmediate(foundObj.gameObject);
                 }
-
                 GameObject obj = PrefabUtility.InstantiatePrefab(FloorPrefab) as GameObject;
                 if (obj != null && gameObject != null)
                 {

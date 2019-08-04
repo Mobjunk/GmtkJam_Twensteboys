@@ -21,7 +21,6 @@ public class GameManager : Singleton<GameManager>
     private FollowPlayer _followPlayer;
     private PlayerSpawn _playerSpawn;
     private Finish _finish;
-    private Tween _CamTween;
 
     private Vector3 _respawnCamPos;
     private void Awake()
@@ -38,14 +37,12 @@ public class GameManager : Singleton<GameManager>
         _playerMovement = _playerPawn.GetComponent<PlayerMovement>();
         _respawnCamPos = RespawnCameraLocation.Instance().transform.position;
 
-        _CamTween = _camera.transform.DOMove(_playerSpawn.transform.position + CameraOffset, 4).SetDelay(2f).Play();
-        _CamTween.OnComplete(gameStart);
+        _camera.transform.DOMove(_playerSpawn.transform.position + CameraOffset, 4).SetDelay(2f).OnComplete(gameStart).Play();
 
     }
 
     void gameStart()
     {
-        print("test");
         _followPlayer.StartFollow();
         _playerMovement.AllowInput();
     }
@@ -68,11 +65,12 @@ public class GameManager : Singleton<GameManager>
     {
         _followPlayer.StopFollowing();
         _playerMovement.DenyInput();
-        SpawnPlayer();
+        
 
         _camera.transform.DOMove(_respawnCamPos, 2).
             SetEase(Ease.InOutQuart).OnComplete(() =>
                 {
+                    SpawnPlayer();
                     _camera.transform.DOMove(_playerPawn.transform.position + CameraOffset, 3).SetDelay(3f).
                         SetEase(Ease.InOutQuart).
                         OnComplete(gameStart).Play();
