@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3853716499567808188}
   - component: {fileID: 3853716499567808189}
   - component: {fileID: 3853716499567808190}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: KillZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
