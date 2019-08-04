@@ -120,12 +120,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lowestPosition: 5
-  MoveOutDuration: 2
+  MoveOutDuration: 3
   MoveOutEase: 30
   MoveInDuration: 2
   MoveInEase: 23
-  ScaleOutDuration: 1.4
-  ScaleOutEase: 17
+  ScaleOutDuration: 3
+  ScaleOutEase: 28
   ScaleInDuration: 1.2
   ScaleInEase: 27
   _delay: 1.4
@@ -140,5 +140,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 5.86, z: 0.9}
+  m_Size: {x: 0.7, y: 5.86, z: 0.7}
   m_Center: {x: 0, y: 3.9, z: 0}

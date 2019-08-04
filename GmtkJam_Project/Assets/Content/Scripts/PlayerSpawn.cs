@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-public class PlayerSpawn : MonoBehaviour
+public class PlayerSpawn : Singleton<PlayerSpawn>
 {
+    public Vector3 GetSpawnLocation() => _closestGridElement.transform.position + Vector3.up * 0.5f;
+    public Quaternion GetSpawnRotation() => transform.rotation;
     [SerializeField] private GridElement _closestGridElement;
     [SerializeField] private bool _reset;
     void OnValidate()
