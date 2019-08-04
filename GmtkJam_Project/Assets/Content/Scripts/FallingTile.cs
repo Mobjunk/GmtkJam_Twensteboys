@@ -49,7 +49,6 @@ public class FallingTile : MonoBehaviour
     {
         destroyed = true;
 
-
         _Move = transform.DOMove(transform.position + Vector3.down * lowestPosition, MoveOutDuration).SetDelay(_startDelay);
         _Move.SetEase(MoveOutEase);
 

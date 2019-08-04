@@ -19,7 +19,6 @@ public class GridElement : MonoBehaviour
 
     [SerializeField, HideInInspector] GameObject[] walls = new GameObject[4];
 
-    [SerializeField] private bool HasRoof;
     [SerializeField] private GameObject RoofPrefab;
     [SerializeField, HideInInspector] private GameObject RoofInstance;
 
@@ -27,7 +26,7 @@ public class GridElement : MonoBehaviour
 
     [SerializeField] private bool HasFloor = true;
     [SerializeField] private GameObject FloorPrefab;
-    [SerializeField,HideInInspector] private GameObject FloorInstance;
+    [SerializeField] private GameObject FloorInstance;
 
 
 
@@ -231,11 +230,44 @@ public class GridElement : MonoBehaviour
         }
     }
 
+    void CreateRoof()
+    {
+        if (!HasFloor)
+        {
+            if (RoofInstance == null)
+            {
+                Transform foundObj;
+                while ((foundObj = transform.Find("Roof")) != null)
+                {
+                    DestroyImmediate(foundObj.gameObject);
+                }
+                GameObject obj = PrefabUtility.InstantiatePrefab(RoofPrefab) as GameObject;
+                if (obj != null && gameObject != null)
+                {
+                    obj.name = "Roof";
+                    obj.transform.parent = gameObject.transform;
+                    obj.transform.localPosition = Vector3.zero;
+                    obj.transform.rotation = Quaternion.identity;
+                    RoofInstance = obj;
+                }
+            }
+        }
+        else
+        {
+            if (RoofInstance != null)
+            {
+                DestroyImmediate(RoofInstance);
+                RoofInstance = null;
+            }
+        }
+    }
+
     private void OnValidate()
     {
         UnityEditor.EditorApplication.delayCall += () =>
         {
             CreateFloor();
+            CreateRoof();
 
             SetTop(_Top);
             SetRight(_Right);
