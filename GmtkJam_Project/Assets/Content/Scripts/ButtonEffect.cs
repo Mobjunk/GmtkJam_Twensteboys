@@ -16,7 +16,7 @@ public class ButtonEffect : MonoBehaviour
 
     Tween Scale;
 
-    private void Awake()
+    private void OnEnable()
     {
         Scale = transform.DOScale(Vector3.one, ScaleInDuration);
         Scale.SetEase(ScaleInEase);
