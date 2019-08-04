@@ -13,6 +13,24 @@ public class GridElement : MonoBehaviour
 
     public GameObject ground => transform.GetChild(0).gameObject;
 
+    public GameObject GetWall(int Index)
+    {
+        if (walls[Index] != null)
+            return walls[Index];
+
+        if (this != null)
+        {
+            Transform hierarchy = transform.Find("Wall_" + GetNameForIndex(Index));
+            if (hierarchy != null)
+            {
+                walls[Index] = hierarchy.gameObject;
+            }
+
+            return walls[Index];
+        }
+
+        return null;
+    }
 
     public void Clear()
     {
@@ -23,18 +41,18 @@ public class GridElement : MonoBehaviour
     }
 
     float GetBoundX => ground.transform.lossyScale.x / 2;
-    float GetBoundZ => ground.transform.lossyScale.z / 2;
+    float GetBoundZ => ground.transform.lossyScale.z;
     float GetBoundY => ground.transform.lossyScale.y / 2;
 
-    float GetWallBoundY => WallPrefab.transform.lossyScale.y / 2;
-    float GetWallBoundZ => WallPrefab.transform.lossyScale.z / 2;
+    float GetWallBoundY => WallPrefab.transform.GetChild(0).GetComponent<MeshRenderer>().bounds.size.y / 2;
+    float GetWallBoundZ => WallPrefab.transform.GetChild(0).GetComponent<MeshRenderer>().bounds.size.x * 0.5f;
 
     public void SetTop(bool active)
     {
         _Top = active;
         if (_Top)
         {
-            if (walls[0] == null)
+            if (GetWall(0) == null)
             {
                 CreateWall(0,
                     (Vector3.forward * (GetBoundZ - GetWallBoundZ)) + (Vector3.up * (GetBoundY + GetWallBoundY)),
@@ -43,7 +61,7 @@ public class GridElement : MonoBehaviour
         }
         else
         {
-            if (walls[0] != null)
+            if (GetWall(0) != null)
             {
                 DestroyImmediate(walls[0]);
             }
@@ -55,18 +73,18 @@ public class GridElement : MonoBehaviour
         _Right = active;
         if (_Right)
         {
-
-            if (walls[1] == null)
+            if (GetWall(1) == null)
             {
+
                 CreateWall(1,
-                    (Vector3.right * (GetBoundX - GetWallBoundZ)) + (Vector3.up * (GetBoundY + GetWallBoundY)),
+                    (Vector3.right * (GetBoundZ - GetWallBoundZ)) + (Vector3.up * (GetBoundY + GetWallBoundY)),
                     Quaternion.Euler(0, 90, 0));
 
             }
         }
         else
         {
-            if (walls[1] != null)
+            if (GetWall(1) != null)
             {
                 DestroyImmediate(walls[1]);
             }
@@ -78,7 +96,7 @@ public class GridElement : MonoBehaviour
         _Bottom = active;
         if (_Bottom)
         {
-            if (walls[2] == null)
+            if (GetWall(2) == null)
             {
                 CreateWall(2,
                     (Vector3.back * (GetBoundZ - GetWallBoundZ)) + (Vector3.up * (GetBoundY + GetWallBoundY)),
@@ -87,7 +105,7 @@ public class GridElement : MonoBehaviour
         }
         else
         {
-            if (walls[2] != null)
+            if (GetWall(2) != null)
             {
                 DestroyImmediate(walls[2]);
             }
@@ -100,7 +118,7 @@ public class GridElement : MonoBehaviour
 
         if (_Left)
         {
-            if (walls[3] == null)
+            if (GetWall(3) == null)
             {
                 CreateWall(3,
                     (Vector3.left * (GetBoundZ - GetWallBoundZ)) + (Vector3.up * (GetBoundY + GetWallBoundY)),
@@ -110,7 +128,7 @@ public class GridElement : MonoBehaviour
         else
         {
 
-            if (walls[3] != null)
+            if (GetWall(3) != null)
             {
                 DestroyImmediate(walls[3]);
             }
@@ -120,6 +138,7 @@ public class GridElement : MonoBehaviour
     GameObject CreateWall(int index, Vector3 location, Quaternion rotation)
     {
         GameObject obj = PrefabUtility.InstantiatePrefab(WallPrefab) as GameObject;
+        obj.name = "Wall_" + GetNameForIndex(index);
         obj.transform.parent = gameObject.transform;
         obj.transform.position = transform.position + location;
         obj.transform.rotation = rotation;
@@ -129,13 +148,30 @@ public class GridElement : MonoBehaviour
         return obj;
     }
 
+    string GetNameForIndex(int index)
+    {
+        if (index == 0)
+            return "Top";
+
+        if (index == 1)
+            return "Right";
+
+        if (index == 2)
+            return "Bottom";
+
+        if (index == 3)
+            return "Left";
+
+        return "INVALID";
+    }
+
     private void OnValidate()
     {
         UnityEditor.EditorApplication.delayCall += () =>
         {
             SetTop(_Top);
             SetRight(_Right);
-            SetBottom((_Bottom));
+            SetBottom(_Bottom);
             SetLeft(_Left);
         };
 
