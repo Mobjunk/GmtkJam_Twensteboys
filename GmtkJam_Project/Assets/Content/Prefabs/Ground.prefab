@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lowestPosition: 5
+  _startDelay: 0.5
   MoveOutDuration: 3
   MoveOutEase: 30
   MoveInDuration: 2

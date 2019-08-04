@@ -19,6 +19,7 @@ public class GridElement : MonoBehaviour
 
     [SerializeField, HideInInspector] GameObject[] walls = new GameObject[4];
 
+    [SerializeField] private bool HasRoof;
     [SerializeField] private GameObject RoofPrefab;
     [SerializeField, HideInInspector] private GameObject RoofInstance;
 

@@ -3,7 +3,7 @@
 [ExecuteAlways]
 public class PlayerSpawn : Singleton<PlayerSpawn>
 {
-    public Vector3 GetSpawnLocation() => _closestGridElement.transform.position + Vector3.up * 0.5f;
+    public Vector3 GetSpawnLocation() => _closestGridElement.transform.position + Vector3.up * .5f;
     public Quaternion GetSpawnRotation() => transform.rotation;
     [SerializeField] private GridElement _closestGridElement;
 
