@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class Door : MonoBehaviour
 {
 	[SerializeField] private int doorID = 0;
+	[SerializeField] private Transform[] doors;
+	[SerializeField] private int openingDuration;
 	public int DoorID => doorID;
 
 	private void OnCollisionEnter(Collision collision)
@@ -22,7 +26,11 @@ public class Door : MonoBehaviour
 		{
 			if(key.ItemID == doorID)
 			{
-				Destroy(this.gameObject);
+				foreach(Transform door in doors)
+				{
+					door.DORotate(new Vector3(-90, 0, 90), openingDuration).SetEase(Ease.InOutCirc).Play();
+				}
+				GetComponent<Collider>().enabled = false;
 			}
 		}
 	}
