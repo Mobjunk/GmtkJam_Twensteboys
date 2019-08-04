@@ -10,6 +10,12 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject _playerPawnObject;
     private GameObject _playerPawn;
 
+    [SerializeField]
+    private Vector3 CameraOffset;
+
+    [SerializeField] private Vector3 CameraRotation;
+
+
     private Camera _camera;
     private PlayerSpawn _playerSpawn;
     private Finish _finish;
@@ -18,10 +24,10 @@ public class GameManager : Singleton<GameManager>
     {
         _playerSpawn = PlayerSpawn.Instance();
         _finish = Finish.Instance();
-        _camera = Instantiate(_cameraGameObject, _finish.transform.position + Vector3.up * 5, _cameraGameObject.transform.rotation).GetComponent<Camera>();
+        _camera = Instantiate(_cameraGameObject, _finish.transform.position + CameraOffset, Quaternion.Euler(CameraRotation)).GetComponent<Camera>();
         KillZone.Instance().BindOnDieEvent(SpawnPlayer);
 
-        _CamTween = _camera.transform.DOMove(_playerSpawn.transform.position + Vector3.back * 1.3f + Vector3.up * 5, 4).Play();
+        _CamTween = _camera.transform.DOMove(_playerSpawn.transform.position + CameraOffset, 4).Play();
         _CamTween.OnComplete(gameStart);
         SpawnPlayer();
     }

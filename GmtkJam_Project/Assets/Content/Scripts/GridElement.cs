@@ -1,6 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+enum Direction
+{
+    Top, Right, Bottom, Left, None
+}
+
 public class GridElement : MonoBehaviour
 {
 #if UNITY_EDITOR
@@ -8,7 +13,22 @@ public class GridElement : MonoBehaviour
     [SerializeField] private bool _Top, _Right, _Bottom, _Left;
     [SerializeField] private GameObject WallPrefab;
 
+    [SerializeField] private GameObject SpecialWalllPrefab;
+    [SerializeField] private Direction SpecialWallPrefabLocation = Direction.None;
+
     [SerializeField, HideInInspector] GameObject[] walls = new GameObject[4];
+
+    [SerializeField] private GameObject RoofPrefab;
+    [SerializeField, HideInInspector] private GameObject RoofInstance;
+
+
+
+    [SerializeField] private bool HasFloor = true;
+    [SerializeField] private GameObject FloorPrefab;
+    [SerializeField,HideInInspector] private GameObject FloorInstance;
+
+
+
 
 
     public GameObject ground => transform.GetChild(0).gameObject;
@@ -16,7 +36,9 @@ public class GridElement : MonoBehaviour
     public GameObject GetWall(int Index)
     {
         if (walls[Index] != null)
+        {
             return walls[Index];
+        }
 
         if (this != null)
         {
@@ -137,8 +159,10 @@ public class GridElement : MonoBehaviour
 
     GameObject CreateWall(int index, Vector3 location, Quaternion rotation)
     {
-        GameObject obj = PrefabUtility.InstantiatePrefab(WallPrefab) as GameObject;
-        obj.name = "Wall_" + GetNameForIndex(index);
+        bool SpawnSpecialPrefab = index == (int) SpecialWallPrefabLocation && SpecialWalllPrefab != null;
+
+        GameObject obj = PrefabUtility.InstantiatePrefab(SpawnSpecialPrefab ? SpecialWalllPrefab : WallPrefab) as GameObject;
+        obj.name = "Wall_" + GetNameForIndex(index) + (SpawnSpecialPrefab ? "_Special" : "");
         obj.transform.parent = gameObject.transform;
         obj.transform.position = transform.position + location;
         obj.transform.rotation = rotation;
@@ -151,28 +175,67 @@ public class GridElement : MonoBehaviour
     string GetNameForIndex(int index)
     {
         if (index == 0)
+        {
             return "Top";
+        }
 
         if (index == 1)
+        {
             return "Right";
+        }
 
         if (index == 2)
+        {
             return "Bottom";
+        }
 
         if (index == 3)
+        {
             return "Left";
+        }
 
         return "INVALID";
+    }
+
+    void CreateFloor()
+    {
+        if (HasFloor)
+        {
+            if (FloorInstance == null)
+            {
+                GameObject obj = PrefabUtility.InstantiatePrefab(FloorPrefab) as GameObject;
+                if (obj != null)
+                {
+                    obj.name = "Floor";
+                    obj.transform.parent = gameObject.transform;
+                    obj.transform.localPosition = Vector3.zero;
+                    obj.transform.rotation = Quaternion.identity;
+                    FloorInstance = obj;
+                }
+            }
+        }
+        else
+        {
+            if (FloorInstance != null)
+            {
+                DestroyImmediate(FloorInstance);
+                FloorInstance = null;
+            }
+        }
     }
 
     private void OnValidate()
     {
         UnityEditor.EditorApplication.delayCall += () =>
         {
+            CreateFloor();
+
             SetTop(_Top);
             SetRight(_Right);
             SetBottom(_Bottom);
             SetLeft(_Left);
+
+
         };
 
 
