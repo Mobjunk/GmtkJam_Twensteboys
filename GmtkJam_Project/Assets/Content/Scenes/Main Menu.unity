@@ -1769,17 +1769,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'NAAM
-
-    NAAM
-
-    NAAM
-
-    NAAM
-
-    NAAM
-
-    NAAM'
+  m_Text: "Damian van Hoorn\nLuuk Hulshof\nNighel Nijhuis\nNoah Brinkman\nMarc \nNico
+    Sistermans\nRowen\nFabian"
 --- !u!222 &1952508217
 CanvasRenderer:
   m_ObjectHideFlags: 0
