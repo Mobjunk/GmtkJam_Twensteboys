@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 2613678852607811477}
   movementSpeed: 40
-  MaxGroundDistance: 0.1
+  MaxGroundDistance: 0.3
 --- !u!114 &1936512071851090489
 MonoBehaviour:
   m_ObjectHideFlags: 0

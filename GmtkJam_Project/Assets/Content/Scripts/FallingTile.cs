@@ -6,6 +6,7 @@ public class FallingTile : MonoBehaviour
 {
 
     public float lowestPosition = 20;
+    public float _startDelay = 1f;
 
     [SerializeField] private float MoveOutDuration = 1.3f;
     [SerializeField] private Ease MoveOutEase = Ease.OutCirc;
@@ -49,10 +50,10 @@ public class FallingTile : MonoBehaviour
         destroyed = true;
 
 
-        _Move = transform.DOMove(transform.position + Vector3.down * lowestPosition, MoveOutDuration).Pause();
+        _Move = transform.DOMove(transform.position + Vector3.down * lowestPosition, MoveOutDuration).SetDelay(_startDelay);
         _Move.SetEase(MoveOutEase);
 
-        _Scale = transform.DOScale(Vector3.zero, ScaleOutDuration).Pause();
+        _Scale = transform.DOScale(Vector3.zero, ScaleOutDuration).SetDelay(_startDelay);
         _Scale.SetEase(ScaleOutEase);
 
         _Move.OnComplete(() => { _collider.enabled = false; });
