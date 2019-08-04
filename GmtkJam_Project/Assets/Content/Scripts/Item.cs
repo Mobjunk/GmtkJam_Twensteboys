@@ -14,7 +14,12 @@ public class Item : MonoBehaviour
 		if (pINV != null)
 		{
 			pINV.PickUpKey(this);
-			Destroy(this.gameObject);
+			gameObject.SetActive(false);
 		}
 	}
+
+    private void Start()
+    {
+        KillZone.Instance().BindOnDieEvent(()=>{gameObject.SetActive(true);});
+    }
 }
