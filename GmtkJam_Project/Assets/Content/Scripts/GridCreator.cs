@@ -103,7 +103,6 @@ public class GridCreator : MonoBehaviour
     private void Start()
     {
         GetKillzone().BindOnDieEvent(ResetLevel);
-
     }
 
     private void ResetLevel()

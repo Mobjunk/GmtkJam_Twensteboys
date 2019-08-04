@@ -125,7 +125,7 @@ MonoBehaviour:
   MoveInDuration: 2
   MoveInEase: 23
   ScaleOutDuration: 3
-  ScaleOutEase: 28
+  ScaleOutEase: 30
   ScaleInDuration: 1.2
   ScaleInEase: 27
   _delay: 1.4

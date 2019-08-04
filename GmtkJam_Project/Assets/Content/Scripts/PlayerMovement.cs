@@ -1,4 +1,5 @@
 ﻿
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -12,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Collider _collider;
     private bool _allowInput;
 
+    public bool IsAllowingInput() => _allowInput;
     public void AllowInput()
     {
         _allowInput = true;

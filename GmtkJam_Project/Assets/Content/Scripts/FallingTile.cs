@@ -28,14 +28,18 @@ public class FallingTile : MonoBehaviour
     [SerializeField]
     private float _delay;
 
+    private BoxCollider _collider;
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerMovement>() != null)
+        if (!destroyed)
         {
-            if (!destroyed)
+            if (other.GetComponent<PlayerMovement>())
             {
-                DestroyTile();
+                if (other.GetComponent<PlayerMovement>().IsAllowingInput())
+                {
+                    DestroyTile();
+                }
             }
         }
     }
@@ -50,6 +54,8 @@ public class FallingTile : MonoBehaviour
 
         _Scale = transform.DOScale(Vector3.zero, ScaleOutDuration).Pause();
         _Scale.SetEase(ScaleOutEase);
+
+        _Move.OnComplete(() => { _collider.enabled = false; });
 
         _Move.PlayForward();
         _Scale.PlayForward();
@@ -91,17 +97,19 @@ public class FallingTile : MonoBehaviour
 
     private void Start()
     {
-        _delay = Random.Range(0.1f, 2f);
+        _delay = Random.Range(1f, 3f);
         startPos = new Vector3() + transform.position;
         startScale = new Vector3() + transform.lossyScale;
 
+        _collider = GetComponent<BoxCollider>();
         KillZone.Instance().BindOnDieEvent(Rise);
     }
 
     private void OnTweenCompleted()
     {
-        if (_Move.IsComplete() && _Scale.IsComplete())
+        if (!_Move.IsPlaying() && !_Scale.IsPlaying())
         {
+            _collider.enabled = true;
             destroyed = false;
             StartRise = false;
         }
