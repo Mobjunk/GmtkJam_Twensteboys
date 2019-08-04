@@ -203,8 +203,13 @@ public class GridElement : MonoBehaviour
         {
             if (FloorInstance == null)
             {
+                Transform foundObj;
+                while ((foundObj = transform.Find("Floor")) != null)
+                {
+                    DestroyImmediate(foundObj.gameObject);
+                }
                 GameObject obj = PrefabUtility.InstantiatePrefab(FloorPrefab) as GameObject;
-                if (obj != null)
+                if (obj != null && gameObject != null)
                 {
                     obj.name = "Floor";
                     obj.transform.parent = gameObject.transform;
